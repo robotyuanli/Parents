@@ -32,8 +32,9 @@ class ClassesRequest extends FormRequest
         return [
 					'pupil_forename'=>'required',
 					'pupil_surname'=>'required',
-					'pupil_class'=>'required',
-					'parent_email'=>'required',
+					'class'=>'required',
+					'parent_forename'=>'required',
+					'parent_surname'=>'required',
         ];
     }
 

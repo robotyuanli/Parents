@@ -106,14 +106,18 @@
                 processData:false,          // To send DOMDocument or non processed data file it is set to false
                 success: function(result){
 									hideSpinner();
-									console.log(result.data);
+									console.log(result.message);
 									if(result.message == 'empty') {
 											$('#content').html('Empty');
 											$('#content2').html('Current file is empty.');
 									}
-									else if(result.message == 'failed') {
+									else if(result.message == 'field missing') {
 											$('#content').html('Failed');
-											$('#content2').html('Current file is not correct.');
+											$('#content2').html('Some fields are missing.');
+									}
+									else if(result.message == 'value empty') {
+											$('#content').html('Failed');
+											$('#content2').html('Some values are empty.');
 									}
 									else {
 										$('#content').html('Success');

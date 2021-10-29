@@ -539,25 +539,36 @@ class AdminController extends Controller
 			else {
 				$flag = true;
 				for($i = 0 ; $i < count($class) ; $i ++) {
-					if($class[$i]['pupil_forename'] == '' || $class[$i]['pupil_surname'] == '' || $class[$i]['pupil_class'] == '' || 
+					if($class[$i]['pupil_forename'] == '' || $class[$i]['pupil_surname'] == '' || $class[$i]['class'] == '' || 
 						$class[$i]['parent_forename'] == '' || $class[$i]['parent_surname'] == '') {
 						$flag = false;
 						break;
 					}
 				}
 				if($flag) {
-        	$role = Role::where('slug', '=', 'user')->first();
-        	$user = User::create([
-							'name'              => 'bbb aaa',
-							'first_name'        => 'aaa',
-							'last_name'         => 'bbb',
-							'email'             => 'aaa@bbb.com',
-							'password'          => 'aaaa',
-							'token'             => str_random(64),
-							'activated'         => 1,
-					]);
-					$user->attachRole($role);
+					$role = Role::where('slug', '=', 'user')->first();
 					for($i = 0 ; $i < count($class) ; $i ++) {
+						$user = User::firstOrNew(['name'=>$class[$i]['parent_surname'].$class[$i]['parent_forename']]);
+						$user->name = $class[$i]['parent_surname'].$class[$i]['parent_forename'];
+						$user->first_name = $class[$i]['parent_forename'];
+						$user->last_name = $class[$i]['parent_surname'];
+						$user->email = $class[$i]['parent_email'];
+						$user->password = '';
+						$user->token = str_random(64);
+						$user->activated = 1;
+						$user->save();
+						$user->attachRole($role);
+						
+						DB::table('childs')->updateOrInsert(
+							['full_name'				=> $class[$i]['pupil_surname'].$class[$i]['pupil_forename']],
+							[
+							'full_name'         => $class[$i]['pupil_surname'].$class[$i]['pupil_forename'],
+							'first_name'        => $class[$i]['pupil_forename'],
+							'last_name'         => $class[$i]['pupil_surname'],
+							'class_id'          => DB::table('classes')->where('name', $class[$i]['class'])->first()->id,
+							'p_id'            	=> $user->id,
+							]
+						);
 					}
 					return response()->json(['message' => 'success', 'data' => $class]);
 				}

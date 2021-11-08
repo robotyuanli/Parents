@@ -52,6 +52,10 @@
             View Pupil Slot Links
         </a>
 
+				<a id="navbarDropdown" class="nav-link" href="{{ url('/parentnoemail') }}" role="button" style="color: #012c56;font-size:17px;font-weight: bold;">
+
+            View Parents No Email
+        </a>
 
         <!-- <a id="navbarDropdown" class="nav-link"  href="{{ route('adminlogout') }}"
            onclick="event.preventDefault();

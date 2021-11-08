@@ -331,6 +331,22 @@ class AdminController extends Controller
 			return view('pages.admin.parentlinks');
 		}
 
+		public function parentnoemail() {
+			$data = DB::table('users as us')
+								->join('role_user as ru', 'us.id', '=', 'ru.user_id')
+								->join('childs as ch', 'us.id', '=', 'ch.p_id')
+								->join('classes as cl', 'cl.id', '=', 'ch.class_id')
+								->join('t_calendars as ca', 'ca.class_id', '=', 'cl.id')
+								->where('ru.role_id', 2)
+								->where('us.email', null)
+								->where('ca.is_deleted', 0)
+								->select('us.first_name as parent_firstname', 'us.last_name as parent_lastname',
+									'ch.first_name as child_firstname', 'ch.last_name as child_lastname',
+									'cl.name as class_name', 'ca.id as calendar_id')
+								->get();
+			return view('pages.admin.parentnoemail', compact('data'));
+		}
+
 		public function manageparentlinks($name) {
 			$class = DB::table('classes')->where('name', $name)->get();
 			$class_id = $class[0]->id;

@@ -123,6 +123,7 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin', 'activity', 't
 	
 		Route::get('/parent/delete/{id}',  'AdminController@deleteparent');
 		Route::get('/parentlinks',  'AdminController@parentlinks');
+		Route::get('/parentnoemail',  'AdminController@parentnoemail');
 		Route::get('/manage/{name}',  'AdminController@manageparentlinks');
 		Route::any('/generate/links', ['as' => 'generate.links', 'uses' => 'AdminController@generateLinks']);
     Route::any('/send/emails', ['as' => 'send.emails', 'uses' => 'AdminController@sendEmails']);

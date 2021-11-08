@@ -540,8 +540,11 @@ class AdminController extends Controller
 			for($i = 0 ; $i < count($data) ; $i ++) {
 				$sheet = $data[$i];
 				for($j  = 0 ; $j < count($sheet) ; $j ++) {
-					$class[$k] = $sheet[$j];
-					$k ++;
+					if(!($sheet[$j]['pupil_forename'] == null && $sheet[$j]['pupil_surname'] == null && $sheet[$j]['class'] == null && 
+						 $sheet[$j]['parent_forename'] == null && $sheet[$j]['parent_surname'] == null && $sheet[$j]['parent_email'] == null)) {
+						$class[$k] = $sheet[$j];
+						$k ++;
+					}
 				}
 			}
 			$table = [];
@@ -589,7 +592,7 @@ class AdminController extends Controller
 					return response()->json(['message' => 'success', 'data' => $class]);
 				}
 				else {
-					return response()->json(['message' => 'value empty']);
+					return response()->json(['message' => 'value empty', 'data' => $data]);
 				}
 			}
     }

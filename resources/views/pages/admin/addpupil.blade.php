@@ -23,7 +23,7 @@
             <form method="POST" action="{{ route('addpupil') }}">
                 @csrf
                 <div class="form-group col-md-6">
-                    <label for="first_name" class="col-md-12 col-form-label text-md-left">ForeName*</label>
+                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Forename*</label>
 
                     <div class="col-md-12">
                         <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ old('first_name') }}" required autofocus>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="last_name" class="col-md-12 col-form-label text-md-left">SurName *</label>
+                    <label for="last_name" class="col-md-12 col-form-label text-md-left">Surname *</label>
 
                     <div class="col-md-12">
                         <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ old('last_name') }}" required autofocus>

@@ -20,12 +20,12 @@ return [
     'create_user_ph_username'    => 'Username',
     'create_user_icon_username'  => 'fa-user',
 
-    'create_user_label_firstname' => 'Fore Name',
-    'create_user_ph_firstname'    => 'Fore Name',
+    'create_user_label_firstname' => 'Forename',
+    'create_user_ph_firstname'    => 'Forename',
     'create_user_icon_firstname'  => 'fa-user',
 
-    'create_user_label_lastname' => 'Sur Name',
-    'create_user_ph_lastname'    => 'Sur Name',
+    'create_user_label_lastname' => 'Surname',
+    'create_user_ph_lastname'    => 'Surname',
     'create_user_icon_lastname'  => 'fa-user',
 
     'create_user_label_password' => 'Password',

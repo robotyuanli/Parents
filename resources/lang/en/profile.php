@@ -21,8 +21,8 @@ return [
 
     // USER profile title
     'showProfileUsername'        => 'Username',
-    'showProfileFirstName'       => 'Fore Name',
-    'showProfileLastName'        => 'Sur Name',
+    'showProfileFirstName'       => 'Forename',
+    'showProfileLastName'        => 'Surname',
     'showProfileEmail'           => 'E-mail Address',
     'showProfileLocation'        => 'Location',
     'showProfileBio'             => 'Bio',

@@ -40,7 +40,7 @@
             <form method="post" action="{{ url('parent/addparent1') }}">
 			  @csrf
 			  <div class="form-group col-md-6">
-                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Fore Name *</label>
+                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Forename *</label>
 
                     <div class="col-md-12">
                         <input id="first_name" type="text" class="form-control" name="first_name" value="" required >
@@ -48,7 +48,7 @@
 					
                 </div>
 				 <div class="form-group col-md-6">
-                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Sur Name *</label>
+                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Surname *</label>
 
                     <div class="col-md-12">
                         <input id="last_name" type="text" class="form-control" name="last_name" value="" required >
@@ -77,7 +77,7 @@
 				
 				
 			  <div class="form-group col-md-6">
-                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Childs Fore Name *</label>
+                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Childs Forename *</label>
 
                     <div class="col-md-12">
                         <input id="c_first_name" type="text" class="form-control" name="c_first_name" value="" required >

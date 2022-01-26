@@ -65,8 +65,8 @@
                                             <th class="hidden-xxs">ID</th>
                                             <th>Username</th>
                                             <th class="hidden-xs hidden-sm">Email</th>
-                                            <th class="hidden-xs hidden-sm hidden-md">Fore Name</th>
-                                            <th class="hidden-xs hidden-sm hidden-md">Sur Name</th>
+                                            <th class="hidden-xs hidden-sm hidden-md">Forename</th>
+                                            <th class="hidden-xs hidden-sm hidden-md">Surname</th>
                                             <th class="hidden-xs hidden-sm">Role</th>
                                             <th class="hidden-xs">Deleted</th>
                                             <th class="hidden-xs">Deleted IP</th>

@@ -58,7 +58,7 @@
                     <select class="form-control" id="teacher_id" name="teacher_id" style="border:2px solid #000;font-size:17px;color:#000;width:300px;height:40px;" >
                         {{--<option value="0"></option>--}}
                         @foreach($teachers as $teacher)
-                            <option value="{{ $teacher->id }}">{{ $teacher->full_name }}</option>
+                            <option value="{{ $teacher->id }}">{{ $teacher->first_name }} {{ $teacher->last_name }}</option>
                         @endforeach
                     </select>
                 </div>

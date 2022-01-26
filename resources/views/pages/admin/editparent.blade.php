@@ -20,7 +20,7 @@
                 @csrf
                 <input type="hidden" name="id" value="{{ $parent->id }}">
                 <div class="form-group col-md-6">
-                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Fore Name *</label>
+                    <label for="first_name" class="col-md-12 col-form-label text-md-left">Forename *</label>
 
                     <div class="col-md-12">
                         <input id="first_name" type="text" class="form-control{{ $errors->has('first_name') ? ' is-invalid' : '' }}" name="first_name" value="{{ $parent->first_name }}" required autofocus>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="last_name" class="col-md-12 col-form-label text-md-left">Sur Name *</label>
+                    <label for="last_name" class="col-md-12 col-form-label text-md-left">Surname *</label>
 
                     <div class="col-md-12">
                         <input id="last_name" type="text" class="form-control{{ $errors->has('last_name') ? ' is-invalid' : '' }}" name="last_name" value="{{ $parent->last_name }}" required autofocus>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <label for="c_first_name" class="col-md-12 col-form-label text-md-left">Childs Fore Name</label>
+                    <label for="c_first_name" class="col-md-12 col-form-label text-md-left">Childs Forename</label>
 
                     <div class="col-md-12">
                         <input id="c_first_name" type="text" class="form-control{{ $errors->has('c_first_name') ? ' is-invalid' : '' }}" name="c_first_name" value="{{ $parent->c_first_name }}"  >

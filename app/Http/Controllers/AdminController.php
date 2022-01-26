@@ -43,7 +43,11 @@ class AdminController extends Controller
     public function addcalendar()
     {
         $classes = DB::table('classes')->get();
-        $teachers = DB::table('teachers')->get();
+        // $teachers = DB::table('teachers')->get();
+				$teachers = DB::table('teachers as t')
+            ->join('classes as c', 'c.id', '=', 't.class_id')
+            ->select('t.*', 'c.name')
+            ->get();
         return view('pages.admin.addcalendar', compact('classes', 'teachers'));
     }
     public function storecalendar(Request $request){

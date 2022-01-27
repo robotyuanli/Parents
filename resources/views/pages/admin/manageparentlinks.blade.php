@@ -32,32 +32,34 @@
                         </tr>
                     </thead>
                     <tbody>
-											@foreach($data as $index => $item)
-                        <tr>
-                            <td>
-															@if($item->email == '')
-																<span style="color: red">No Available Email</span>
-															@else
-																{{ $item->email }}
-															@endif
-                            </td>
-                            <td>
-															{{ $item->first_name }} {{ $item->last_name }}
-                            </td>
-                            <td style="text-align: center">
-															@if($index < count($link))
-																{{ $link[$index]->url }}
-															@endif
-                            </td>
-                            <td style="text-align: center">
-															@if($index < count($link))
-																<a href="{{ url('/pupilslot/') }}/{{$link[$index]->url}}"><i class="fa fa-eye" onclick="" style="color:black; font-size:20px;"></i></a>
-															@else
-																<i class="fa fa-eye" onclick="" style="color:grey; font-size:20px;"></i>
-															@endif															
-                            </td>
-                        </tr>
-                      @endforeach
+											@if($calendar_id != -1)
+												@foreach($data as $index => $item)
+													<tr>
+															<td>
+																@if($item->email == '')
+																	<span style="color: red">No Available Email</span>
+																@else
+																	{{ $item->email }}
+																@endif
+															</td>
+															<td>
+																{{ $item->first_name }} {{ $item->last_name }}
+															</td>
+															<td style="text-align: center">
+																@if($index < count($link))
+																	{{ $link[$index]->url }}
+																@endif
+															</td>
+															<td style="text-align: center">
+																@if($index < count($link))
+																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->url}}"><i class="fa fa-eye" onclick="" style="color:black; font-size:20px;"></i></a>
+																@else
+																	<i class="fa fa-eye" onclick="" style="color:grey; font-size:20px;"></i>
+																@endif															
+															</td>
+													</tr>
+												@endforeach
+											@endif
                     </tbody>
                 </table>
             </div>
@@ -70,9 +72,16 @@
 						<div class="col-md-6">
 								@if(count($data) > 0)
 									<div class="col-md-6">
-											<button onclick="generateLinks()" type="submit" style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
-													Generate Links
-											</button>
+											@if($calendar_id != -1)
+												<button onclick="generateLinks()" type="submit" style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
+														Generate Links
+												</button>
+											@endif
+											@if($calendar_id == -1)
+												<button onclick="" type="submit" style="opacity:0.3;text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
+														Generate Links
+												</button>
+											@endif
 									</div>
 									<div class="col-md-6">
 											<button onclick="sendEmails()" type="submit" style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">

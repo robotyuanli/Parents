@@ -64,17 +64,15 @@
 													<div class="slotitem-content">
                             <?php
                             if($schedule->app_from/100 > 12){
-                                $app_from = ($schedule->app_from/100) - 12;
-                                $app_from = $app_from. ($schedule->app_from%100).' pm';
-                            }else{
-                                $app_from = ($schedule->app_from/100).' am';
-                            }
-                            if($schedule->app_to/100 > 12){
-                                $app_to = ($schedule->app_to/100) - 12;
-                                $app_to = $app_to.' pm';
-                            }else{
-                                $app_to = ($schedule->app_to/100).' am';
-                            }
+																$app_from = ($schedule->app_from/100). ' pm';
+														}else{
+																$app_from = ($schedule->app_from/100). ' am';
+														}
+														if($schedule->app_to/100 > 12){
+																$app_to = ($schedule->app_to/100). ' pm';
+														}else{
+																$app_to = ($schedule->app_to/100) .' am';
+														}
                             ?>
 														<h1 style="font-size: 25px; text-align: center; margin: 0; padding: 20px 0 0 0; color: white; font-weight: bold;"><?php if($schedule->prefix==1) echo "Mr";if($schedule->prefix==2) echo "Mr";if($schedule->prefix==3) echo "Miss";if($schedule->prefix==4) echo "Ms";?>  {{ $schedule->t_first_name }}</h1>
                             <p style="font-size: 22px; text-align: center; margin: 8px 0 0 0; padding: 0px; color: white; font-weight: bold;">{{ $schedule->workingdate }}</p>

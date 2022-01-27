@@ -52,14 +52,12 @@
                             }
 
                             if($slot->app_from/100 > 12){
-                                $app_from = ($slot->app_from/100) - 12;
-                                $app_from = $app_from.' pm';
+                                $app_from = ($slot->app_from/100).' pm';
                             }else{
                                 $app_from = ($slot->app_from/100).' am';
                             }
                             if($slot->app_to/100 > 12){
-                                $app_to = ($slot->app_to/100) - 12;
-                                $app_to = $app_to.' pm';
+                                $app_to = ($slot->app_to/100).' pm';
                             }else{
                                 $app_to = ($slot->app_to/100).' am';
                             }
@@ -69,7 +67,6 @@
                             $start_hour = ($slot->app_from/100) + $hour;
                             $half = '';
                             if($start_hour > 12){
-                                $start_hour = $start_hour - 12;
                                 $half = 'pm';
                             }else{
                                 $half = 'am';

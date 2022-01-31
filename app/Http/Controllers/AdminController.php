@@ -88,6 +88,9 @@ class AdminController extends Controller
         \DB::table('t_calendars')
             ->where('id', $schedule_id)
             ->update(['is_deleted'=> 1]);
+				\DB::table('parent_links')
+						->where('c_id', $schedule_id)
+						->update(['is_deleted'=> 1]);
 
         $ret = array();
         $ret['code'] = $schedule_id;

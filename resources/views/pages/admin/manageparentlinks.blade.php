@@ -52,20 +52,22 @@
 																{{ $item->first_name }} {{ $item->last_name }}
 															</td>
 															<td style="text-align: center">
-																@if($index < count($link))
-																	{{ $link[$index]->url }}
-																@endif
+																{{ $link[$index]->url }}
 															</td>
 															<td style="text-align: center">
-																@if($index < count($link))
+																@if(count($link) > 0)
 																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->url}}" id="url{{ $index }}"><i class="fa fa-eye" style="color:black; font-size:20px;"></i></a>
 																@else
 																	<i class="fa fa-eye" onclick="" style="color:grey; font-size:20px;"></i>
 																@endif															
 															</td>
 															<td style="text-align: center">
-																<a href="#" id="copyIcon" onclick='onCopy("{{ $index }}")'><i class="fa fa-copy" style="color:black; font-size:20px; margin-left: 10px;"></i></a>
-															</td>
+																@if(count($link) > 0)
+																	<a href="#" id="copyIcon" onclick='onCopy("{{ $index }}")'><i class="fa fa-copy" style="color:black; font-size:20px; margin-left: 10px;"></i></a>
+															  @else
+																	<i class="fa fa-copy" style="color:grey; font-size:20px; margin-left: 10px;"></i>
+																@endif
+																</td>
 															<td style="text-align: center" id="alert{{ $index }}">
 															</td>
 													</tr>
@@ -75,7 +77,7 @@
                 </table>
             </div>
         </div>
-				<div class="row" style="margin-top: 100px;">
+				<div class="row" style="margin-top: 120px;">
 					<div class="col-md-12" style="padding-top:50px;position: absolute;bottom:50px;right:50px;" >
 						<div class="col-md-6">
 								&nbsp;
@@ -95,9 +97,16 @@
 											@endif
 									</div>
 									<div class="col-md-6">
-											<button onclick="sendEmails()" type="submit" style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
-													Send Emails
-											</button>
+											@if($calendar_id != -1)
+												<button onclick="sendEmails()" type="submit" style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
+														Send Emails
+												</button>
+											@endif
+											@if($calendar_id == -1)
+												<button onclick="" type="submit" style="opacity:0.3;text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
+														Send Emails
+												</button>
+											@endif
 									</div>
 								@endif
 						</div>

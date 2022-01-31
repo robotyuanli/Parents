@@ -29,6 +29,12 @@
                             <th style="text-align: center">
                                 View Slots
                             </th>
+														<th style="text-align: center">
+                                Copy URL
+                            </th>
+														<th style="text-align: center">
+                                Status
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,10 +58,15 @@
 															</td>
 															<td style="text-align: center">
 																@if($index < count($link))
-																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->url}}"><i class="fa fa-eye" onclick="" style="color:black; font-size:20px;"></i></a>
+																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->url}}" id="url{{ $index }}"><i class="fa fa-eye" style="color:black; font-size:20px;"></i></a>
 																@else
 																	<i class="fa fa-eye" onclick="" style="color:grey; font-size:20px;"></i>
 																@endif															
+															</td>
+															<td style="text-align: center">
+																<a href="#" id="copyIcon" onclick='onCopy("{{ $index }}")'><i class="fa fa-copy" style="color:black; font-size:20px; margin-left: 10px;"></i></a>
+															</td>
+															<td style="text-align: center" id="alert{{ $index }}">
 															</td>
 													</tr>
 												@endforeach
@@ -64,7 +75,7 @@
                 </table>
             </div>
         </div>
-				<div class="row">
+				<div class="row" style="margin-top: 100px;">
 					<div class="col-md-12" style="padding-top:50px;position: absolute;bottom:50px;right:50px;" >
 						<div class="col-md-6">
 								&nbsp;
@@ -124,6 +135,19 @@
         </div>
     </div>
 		<script>
+			$(document).ready(function(){
+				currentIndex = -1;
+			});
+			
+			function onCopy(index) {
+				if(currentIndex >= 0) {
+					$("#alert"+currentIndex).empty();
+				}
+				$("#alert"+index).append("Copied!");
+				navigator.clipboard.writeText($("#url"+index).attr("href"));
+				currentIndex = index;
+			}
+
 			function generateLinks(){
 				var childs = {}
 				childs.data = {!! $data !!};

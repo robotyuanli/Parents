@@ -66,9 +66,10 @@ class AdminController extends Controller
             'app_from'             => $app_from,
             'app_to'             => $app_to,
         ]);
-        // $minutes = ((int)$app_to/100 - (int)$app_from/100 );
+        $minutes = ((int)$app_to/100 * 60 + $app_to%100) - ((int)$app_from/100 * 60 + $app_from%100);
         // $count_slot =  ($minutes - $minutes % (int)$duration)/$duration;
-        $count_slot = (+$app_to - +$app_from)/+$duration;
+        // $count_slot = (+$app_to - +$app_from)/+$duration;
+        $count_slot = $minutes/+$duration;
         //dd($count_slot);
         for($idx =0 ; $idx < $count_slot; $idx++){
             $data = [
@@ -127,7 +128,8 @@ class AdminController extends Controller
                 ,'ca.duration'
                 ,'ca.app_from'
                 ,'ca.app_to'
-                ,'t.full_name as t_full_name'
+                ,'t.first_name as t_first_name'
+								,'t.last_name as t_last_name'
                 ,'pre.name as prefix'
             )
             ->where('ca.id', $calendar_id)

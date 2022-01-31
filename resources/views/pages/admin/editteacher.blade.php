@@ -49,7 +49,7 @@
 
 
                 <div class="form-group col-md-6">
-                    <label for="class_name" class="col-md-12 col-form-label text-md-left">Childs Forename</label>
+                    <label for="class_name" class="col-md-12 col-form-label text-md-left">Class name</label>
 
                     <div class="col-md-12">
                         <input id="class_name" type="text" class="form-control{{ $errors->has('class_name') ? ' is-invalid' : '' }}" name="class_name" value="{{ $teacher->name }}"  >

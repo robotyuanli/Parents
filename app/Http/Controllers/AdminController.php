@@ -322,15 +322,15 @@ class AdminController extends Controller
 			for($i = 0 ; $i < count($link) ; $i ++) {
 				$mail = new PHPMailer;
 				$mail->IsSMTP();                                      // Set mailer to use SMTP
-				$mail->Host = 'mail.goqueens.co.uk';                 // Specify main and backup server
+                $mail->Host = 'smtp.office365.com';                 // Specify main and backup server
 				$mail->Port = 587;                                    // Set the SMTP port
 				$mail->SMTPAuth = true;                               // Enable SMTP authentication
-				$mail->Username = 'parents@goqueens.co.uk';                // SMTP username
-				$mail->Password = '!Jump3r1234!!';                  // SMTP password
+				$mail->Username = 'parents@queenscofe.org.uk';                // SMTP username
+				$mail->Password = 'Sud09358';                  // SMTP password
 				$mail->SMTPSecure = 'tls';         
 				//From email address and name
-				$mail->From = "parents@goqueens.co.uk";
-				$mail->FromName = "Parents System.";
+				$mail->From = "parents@queenscofe.org.uk";
+                $mail->FromName = "Parents System.";
 				
 				//To address and name
 				$mail->addAddress($data[$i]['email']);

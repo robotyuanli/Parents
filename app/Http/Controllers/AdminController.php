@@ -314,6 +314,17 @@ class AdminController extends Controller
 			return json_encode($ret);
 		}
 
+        public function deleteDatas() {
+            DB::table('parent_links')->delete();
+            DB::table('childs')->delete();
+            DB::table('parent_slot')->delete();
+            DB::table('t_calendar_slot')->delete();
+            DB::table('t_calendars')->delete();
+            $ret = array();
+			$ret['message'] = 'success';
+			return json_encode($ret);
+        }
+
 		public function sendEmails(Request $request) {
 			$data = $request->get('data');
 			$link = $request->get('link');

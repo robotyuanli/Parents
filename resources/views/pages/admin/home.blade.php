@@ -62,6 +62,36 @@
 			</div>
 		</div>
 	</div>
+	<div id="deletingmodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 id="message">Deleting datas...</h3	>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+		<div id="confirmmodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 id="message">Deleted all data successfuly!</h3	>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 	<script>
 		document.getElementById("importclass").onclick = function() {
 			document.getElementById("go_importclass").click();
@@ -73,7 +103,15 @@
 			document.getElementById("go_addteacher").click();
 		};
 		document.getElementById("purgedata").onclick = function() {
-
+			deletingmodal
+			$('#deletingmodal').modal('show');
+			jQuery.ajax({
+					url: "{{URL::route("delete.datas")}}",
+					method: 'get',
+					success: function(result){
+						$('#deletingmodal').modal('hide');
+						$('#confirmmodal').modal('show');
+					}});
 		};
 		document.getElementById("addcalendar").onclick = function() {
 			document.getElementById("go_addcalendar").click();

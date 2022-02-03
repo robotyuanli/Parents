@@ -328,7 +328,7 @@ class AdminController extends Controller
 				
 				$mail->Subject = "Pupil Slot";
 				$url = "http://criteria.loginto.me/Parents/public/pupilslot/".$link[$i]['url'];
-				$mail->Body = "Hello!<p>Please see below for your access url.</p><p>URL: <a href='".$url."'>".$url."</a></p><p>Any problems please contact the school office on 02476 382 906</p>";
+				$mail->Body = "Hello!<p>Please see below for your unique access URL for the parents evening coming up.</p><p>URL: <a href='".$url."'>".$url."</a></p><p>Any problems, please contact your Class Teacher via Class Dojo or the school office on 02476 382 906</p><p>Many thanks";
 				$mail->send();
 			}
 			$ret = array();
@@ -377,6 +377,7 @@ class AdminController extends Controller
 			$link = DB::table('childs as ch')
 						->join('users as u', 'u.id', '=', 'ch.p_id')
 						->join('parent_links as pl', 'pl.parent_id', '=', 'ch.p_id')
+                        ->where('pl.c_id', $calendar_id)
 						->where('ch.class_id', $class_id)
 						->select('pl.url')
 						->get();

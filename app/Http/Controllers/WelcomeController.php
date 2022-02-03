@@ -59,7 +59,8 @@ class WelcomeController extends Controller
 							,'ca.duration'
 							,'ca.app_from'
 							,'ca.app_to'
-							,'t.full_name as t_full_name'
+							,'t.first_name as t_first_name'
+							,'t.last_name as t_last_name'
 							,'pre.name as prefix'
 					)
 					->where('ca.id', $calendar_id)

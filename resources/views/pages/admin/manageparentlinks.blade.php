@@ -52,22 +52,24 @@
 																{{ $item->first_name }} {{ $item->last_name }}
 															</td>
 															<td style="text-align: center">
-																{{ $link[$index]->url }}
+																@if(count($link) == count($data))
+																	{{ $link[$index]->url }}
+																@endif
 															</td>
 															<td style="text-align: center">
-																@if(count($link) > 0)
+																@if(count($link) == count($data))
 																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->url}}" id="url{{ $index }}"><i class="fa fa-eye" style="color:black; font-size:20px;"></i></a>
 																@else
 																	<i class="fa fa-eye" onclick="" style="color:grey; font-size:20px;"></i>
-																@endif															
+																@endif											
 															</td>
 															<td style="text-align: center">
-																@if(count($link) > 0)
+																@if(count($link) == count($data))
 																	<a href="#" id="copyIcon" onclick='onCopy("{{ $index }}")'><i class="fa fa-copy" style="color:black; font-size:20px; margin-left: 10px;"></i></a>
-															  @else
+																@else
 																	<i class="fa fa-copy" style="color:grey; font-size:20px; margin-left: 10px;"></i>
 																@endif
-																</td>
+															</td>
 															<td style="text-align: center" id="alert{{ $index }}">
 															</td>
 													</tr>
@@ -153,7 +155,13 @@
 					$("#alert"+currentIndex).empty();
 				}
 				$("#alert"+index).append("Copied!");
-				navigator.clipboard.writeText($("#url"+index).attr("href"));
+				url = $("#url"+index).attr("href");
+				const temp = document.createElement("input");
+				temp.setAttribute("value", url);
+				document.body.appendChild(temp);
+				temp.select();
+  				document.execCommand("copy");
+				document.body.removeChild(temp);
 				currentIndex = index;
 			}
 

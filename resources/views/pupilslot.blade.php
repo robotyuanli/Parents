@@ -26,7 +26,7 @@
                         <div class="col-md-6 parentslot">
                             <?php
                             $prefix = $slot->prefix;
-                            $teacher_name = $slot->t_full_name;
+                            $teacher_name = $slot->t_first_name . " " . $slot->t_last_name;
                             $parent_name = '';
                             $parent_email = '';
                             $child_name = '';
@@ -47,30 +47,61 @@
                                 }
                             }
 
-                            if($slot->app_from/100 > 12){
-                                $app_from = ($slot->app_from/100) - 12;
-                                $app_from = $app_from.' pm';
-                            }else{
-                                $app_from = ($slot->app_from/100).' am';
+                            if($slot->app_from%100 == 0) {
+                                $rest = '00';
                             }
-                            if($slot->app_to/100 > 12){
-                                $app_to = ($slot->app_to/100) - 12;
-                                $app_to = $app_to.' pm';
+                            else if ($slot->app_from%100 < 10) {
+                                $rest = '0'.$slot->app_from%100;
+                            }
+                            else {
+                                $rest = $slot->app_from%100;
+                            }
+                            if($slot->app_from/100 > 12){
+                                $app_from = (($slot->app_from - $slot->app_from%100)/100).'.'. $rest.' pm';
                             }else{
-                                $app_to = ($slot->app_to/100).' am';
+                                $app_from = (($slot->app_from - $slot->app_from%100)/100).'.'. $rest.' am';
+                            }
+                            
+                            if($slot->app_to%100 == 0) {
+                                $rest = '00';
+                            }
+                            else if ($slot->app_to%100 < 10) {
+                                $rest = '0'.$slot->app_to%100;
+                            }
+                            else {
+                                $rest = $slot->app_to%100;
+                            }
+                            if($slot->app_to%100 == 0) {
+                                $rest = '00';
+                            }
+                            else if ($slot->app_to%100 < 10) {
+                                $rest = '0'.$slot->app_to%100;
+                            }
+                            else {
+                                $rest = $slot->app_to%100;
                             }
 
-                            $minutes = $slot->duration * ($slot->order -1);
-                            $hour = ($minutes - ($minutes % 60))/60;
-                            $start_hour = ($slot->app_from/100) + $hour;
+                            if($slot->app_to/100 > 12){
+                                $app_to = (($slot->app_to - $slot->app_to%100)/100).'.'. $rest.' pm';
+                            }else{
+                                $app_to = (($slot->app_to - $slot->app_to%100)/100).'.'. $rest.' am';
+                            }
+
+                            $minutes = $slot->app_from%100 + $slot->duration * ($slot->order -1);
+                            if($minutes >= 60 && $minutes % 60 == 0) {
+                                $hour = $minutes / 60;
+                            }
+                            else {
+                                $hour = ($minutes - ($minutes % 60))/60;
+                            }                            
+                            $start_hour = ($slot->app_from - $slot->app_from%100)/100 + $hour;
                             $half = '';
                             if($start_hour > 12){
-                                $start_hour = $start_hour - 12;
                                 $half = 'pm';
                             }else{
                                 $half = 'am';
                             }
-                            $start_minute = $minutes % 60;
+                            $start_minute = ($slot->app_from%100 + $slot->duration * ($slot->order -1)) % 60;
                             $start_minute = sprintf("%02d", $start_minute);
 
                             ?>

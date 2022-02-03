@@ -66,15 +66,24 @@ class AdminController extends Controller
             'app_from'             => $app_from,
             'app_to'             => $app_to,
         ]);
-        $minutes = ((int)$app_to/100 * 60 + $app_to%100) - ((int)$app_from/100 * 60 + $app_from%100);
+        $minutes = (($app_to - $app_to%100)/100 * 60 + $app_to%100) - (($app_from - $app_from%100)/100 * 60 + $app_from%100);
         // $count_slot =  ($minutes - $minutes % (int)$duration)/$duration;
         // $count_slot = (+$app_to - +$app_from)/+$duration;
-        $count_slot = $minutes/+$duration;
-        //dd($count_slot);
+        $count_slot = ($minutes - $minutes%$duration)/+$duration;
         for($idx =0 ; $idx < $count_slot; $idx++){
             $data = [
                 'calendar_id'=>$calendar_id,
                 'order'=>$idx + 1,
+                'duration'=>$duration,
+                'updated_at'=>date('Y-m-d H:i:s')
+            ];
+            DB::table('t_calendar_slot')->insert($data);
+        }
+        if($minutes%$duration > 0) {
+            $data = [
+                'calendar_id'=>$calendar_id,
+                'order'=>$idx + 1,
+                'duration'=>$minutes%$duration,
                 'updated_at'=>date('Y-m-d H:i:s')
             ];
             DB::table('t_calendar_slot')->insert($data);
@@ -128,6 +137,7 @@ class AdminController extends Controller
                 ,'sl.id as slot_id'
                 ,'sl.order'
                 ,'ps.parent_id'
+                ,'sl.duration as meeting_time'
                 ,'ca.duration'
                 ,'ca.app_from'
                 ,'ca.app_to'
@@ -404,14 +414,15 @@ class AdminController extends Controller
     public function showTeacherCalendar($id){
         $teacher = DB::table('teachers as te')
             ->leftJoin('m_prefix as pre', 'te.prefix', '=' ,'pre.id')
-            ->select('te.full_name', 'pre.name')
+            ->select('te.first_name', 'te.last_name',  'pre.name')
             ->where('te.id', $id)->first();
 
         $schedules = DB::table('t_calendars as s')
             ->join('classes as cs', 'cs.id', '=', 's.class_id')
             ->join('teachers as t', 't.id', '=', 's.teacher_id')
-            ->select('s.*', 'cs.name as class_name', 't.full_name as t_full_name', 't.first_name as t_first_name')
+            ->select('s.*', 'cs.name as class_name', 't.full_name as t_full_name', 't.first_name as t_first_name',  't.last_name as t_last_name', 't.prefix')
             ->where('s.teacher_id', $id)
+            ->where('is_deleted', 0)
             ->orderby('s.workingdate', 'asc')
             ->get();
         return view('pages.admin.calendarteacher', compact('schedules', 'teacher'));

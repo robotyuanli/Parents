@@ -79,8 +79,8 @@
                 </table>
             </div>
         </div>
-				<div class="row" style="margin-top: 120px;">
-					<div class="col-md-12" style="padding-top:50px;position: absolute;bottom:50px;right:50px;" >
+				<div class="row" style="margin-top: 130px;">
+					<div class="col-md-12" style="padding-top:0px;position: absolute;bottom:30px;right:50px;" >
 						<div class="col-md-6">
 								&nbsp;
 						</div>

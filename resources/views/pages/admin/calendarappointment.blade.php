@@ -90,7 +90,7 @@
                             }else{
                                 $app_to = (($slot->app_to - $slot->app_to%100)/100).'.'. $rest.' am';
                             }
-
+                            
                             $minutes = $slot->app_from%100 + $slot->duration * ($slot->order -1);
                             if($minutes >= 60 && $minutes % 60 == 0) {
                                 $hour = $minutes / 60;
@@ -105,13 +105,13 @@
                             }else{
                                 $half = 'am';
                             }
-                            $start_minute = ($slot->app_from%100 + $slot->duration * ($slot->order -1)) % 60;
+                            $start_minute = $minutes % 60;
                             $start_minute = sprintf("%02d", $start_minute);
 
                             ?>
                                 <div class="col-md-12 slotitem appoint_box {{$cls}}">
                                     <p style="font-size: 22px;">{{$prefix}} {{ $teacher_name }}</p>
-                                    <p style="font-size: 22px;">{{ $app_from }} - {{ $app_to }} ,  {{ $start_hour }}:{{$start_minute}} {{$half}} - {{$slot->duration}}min</p>
+                                    <p style="font-size: 22px;">{{ $app_from }} - {{ $app_to }} ,  {{ $start_hour }}:{{$start_minute}} {{$half}} - {{$slot->meeting_time}}min</p>
                                     <p style="font-size: 22px;">Parent Name: {{ $parent_name }}</p>
                                 <p style="font-size: 22px;">Parent Email: {{ $parent_email }}</p>
                                 <p style="font-size: 19px;">Child Name: {{ $child_name }}</p>

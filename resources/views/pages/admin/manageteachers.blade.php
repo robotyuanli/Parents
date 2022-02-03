@@ -58,17 +58,6 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-12" style="padding-top:50px;position: absolute;bottom:50px;right:50px;" >
-                <div class="col-md-6">
-                    &nbsp;
-                </div>
-                <div class="col-md-6">
-                    <div class="col-md-6">
-                    </div>
-                  
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div id="deletemodal" class="modal fade" role="dialog">

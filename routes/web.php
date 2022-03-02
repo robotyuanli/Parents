@@ -126,13 +126,17 @@ Route::group(['middleware' => ['auth', 'activated', 'role:admin', 'activity', 't
 		Route::get('/parentnoemail',  'AdminController@parentnoemail');
 		Route::get('/manage/{name}',  'AdminController@manageparentlinks');
 		Route::any('/generate/links', ['as' => 'generate.links', 'uses' => 'AdminController@generateLinks']);
+    Route::any('/export/csv', ['as' => 'export.csv', 'uses' => 'AdminController@exportCsv']);
     Route::any('/send/emails', ['as' => 'send.emails', 'uses' => 'AdminController@sendEmails']);
     Route::any('/delete/datas', ['as' => 'delete.datas', 'uses' => 'AdminController@deleteDatas']);
     Route::post('/editparent', ['as' => 'editparent',   'uses' => 'AdminController@updateparent']);
+    Route::post('/updateemail', ['as' => 'updateemail',   'uses' => 'AdminController@updateEmail']);
     Route::get('/manageteachers', ['as' => 'manageteachers',   'uses' => 'AdminController@manageteachers']);
     Route::get('/teacher/edit/{id}',  'AdminController@editteacher');
     Route::get('/teacher/calendar/{id}',  'AdminController@showTeacherCalendar');
     Route::get('/calendar/parent/{id}',  'AdminController@showCalendarParent');
+    Route::get('/schedules',  'AdminController@showSchedules');
+    Route::get('/update/email',  'AdminController@showEmail');
     Route::get('/teacher/add',  'AdminController@addteacher');
     Route::get('/teacher/delete/{id}',  'AdminController@deleteteacher');
     Route::post('/editteacher', ['as' => 'editteacher',   'uses' => 'AdminController@updateteacher']);

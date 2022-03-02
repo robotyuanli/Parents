@@ -17,7 +17,10 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-12" style="padding-top:50px;">
+					<div class="col-md-12" style="padding-top:20px;">
+                <h2 style="text-align: center; font-size:25px;font-weight: bold; text-align: left;">Date: {{$workingdate}}</h2>
+            </div>
+            <div class="col-md-12">
                 <h2 style="text-align: center; font-size:30px;font-weight: bold;">Slots</h2>
             </div>
             <div class="col-md-12 table-responsive-md" style="padding-top:50px;padding-bottom:50px;">
@@ -47,46 +50,46 @@
                                 }
                             }
 
-                            if($slot->app_from%100 == 0) {
-                                $rest = '00';
-                            }
-                            else if ($slot->app_from%100 < 10) {
-                                $rest = '0'.$slot->app_from%100;
-                            }
-                            else {
-                                $rest = $slot->app_from%100;
-                            }
+														if($slot->app_from%100 == 0) {
+															$rest = '00';
+														}
+														else if ($slot->app_from%100 < 10) {
+															$rest = '0'.$slot->app_from%100;
+														}
+														else {
+															$rest = $slot->app_from%100;
+														}
                             if($slot->app_from/100 > 12){
                                 $app_from = (($slot->app_from - $slot->app_from%100)/100).'.'. $rest.' pm';
                             }else{
                                 $app_from = (($slot->app_from - $slot->app_from%100)/100).'.'. $rest.' am';
                             }
-                            
-                            if($slot->app_to%100 == 0) {
-                                $rest = '00';
-                            }
-                            else if ($slot->app_to%100 < 10) {
-                                $rest = '0'.$slot->app_to%100;
-                            }
-                            else {
-                                $rest = $slot->app_to%100;
-                            }
-                            if($slot->app_to%100 == 0) {
-                                $rest = '00';
-                            }
-                            else if ($slot->app_to%100 < 10) {
-                                $rest = '0'.$slot->app_to%100;
-                            }
-                            else {
-                                $rest = $slot->app_to%100;
-                            }
+														
+														if($slot->app_to%100 == 0) {
+															$rest = '00';
+														}
+														else if ($slot->app_to%100 < 10) {
+															$rest = '0'.$slot->app_to%100;
+														}
+														else {
+															$rest = $slot->app_to%100;
+														}
+														if($slot->app_to%100 == 0) {
+															$rest = '00';
+														}
+														else if ($slot->app_to%100 < 10) {
+															$rest = '0'.$slot->app_to%100;
+														}
+														else {
+															$rest = $slot->app_to%100;
+														}
 
                             if($slot->app_to/100 > 12){
                                 $app_to = (($slot->app_to - $slot->app_to%100)/100).'.'. $rest.' pm';
                             }else{
                                 $app_to = (($slot->app_to - $slot->app_to%100)/100).'.'. $rest.' am';
                             }
-
+                            
                             $minutes = $slot->app_from%100 + $slot->duration * ($slot->order -1);
                             if($minutes >= 60 && $minutes % 60 == 0) {
                                 $hour = $minutes / 60;
@@ -101,20 +104,20 @@
                             }else{
                                 $half = 'am';
                             }
-                            $start_minute = ($slot->app_from%100 + $slot->duration * ($slot->order -1)) % 60;
+                            $start_minute = $minutes % 60;
                             $start_minute = sprintf("%02d", $start_minute);
 
                             ?>
-															@if ($parent_name == "")
                                 <div class="col-md-12 slotitem appoint_box {{$cls}}">
                                     <p style="font-size: 22px;">{{$prefix}} {{ $teacher_name }}</p>
-                                    <p style="font-size: 22px;">{{ $app_from }} - {{ $app_to }} ,  {{ $start_hour }}:{{$start_minute}} {{$half}} - {{$slot->duration}}min</p>
+                                    <p style="font-size: 22px;">{{ $app_from }} - {{ $app_to }} ,  {{ $start_hour }}:{{$start_minute}} {{$half}} - {{$slot->meeting_time}}min</p>
                                     <p style="font-size: 22px;">Parent Name: {{ $parent_name }}</p>
                                 <p style="font-size: 22px;">Parent Email: {{ $parent_email }}</p>
                                 <p style="font-size: 19px;">Child Name: {{ $child_name }}</p>
                                 <p style="font-size: 19px;">Appointment Date: {{ $appoint_date }}</p>
-                                <i class="fa fa-plus delete"  onclick="selectAdd({{ $slot_id }})" data-toggle="modal" data-target="#addmodal"></i>
-                              @endif
+                                @if(!($is_deleted == 0 && $appoint_id > 0))
+                                  <i class="fa fa-plus delete"  onclick="selectAdd({{ $slot_id }})" data-toggle="modal" data-target="#addmodal"></i>
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -122,6 +125,7 @@
             </div>
         </div>
     </div>
+    
     <div id="confirmmodal" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
@@ -184,27 +188,6 @@
 					var children = {!! $children !!};
 					$('#parent_id').val(children[index].p_id);
 				});
-				
-        function selectDelete(id){
-            $('#did').val(id);
-        }
-        function clickDelete(){
-            var id = $('#did').val();
-            jQuery.ajax({
-                url: "{{ url('/appointment/delete') }}/"+id,
-                method: 'get',
-                success: function(result){
-                    console.log(result);
-                    var ret = JSON.parse(result);
-                    var code = ret.code;
-                    $('#message').html(ret.msg);
-                    $('#confirmmodal').modal('show');
-                    if(code == 1){
-                        location.reload();
-                    }
-                }});
-        }
-
         function selectAdd(slot_id) {
             $('#slot_id').val(slot_id);
         }
@@ -235,7 +218,7 @@
                     $('#add_message').html(ret.msg);
 
                     $('#addconfirmmodal').modal('show');
-                    location.reload();
+										window.location.reload(true);
                 },
                 error: function() {
 

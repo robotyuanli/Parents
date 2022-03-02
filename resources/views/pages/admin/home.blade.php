@@ -31,7 +31,7 @@
 				</a>
 			</div>
 			<div class="space"></div>
-			<div id="purgedata" class="flex-grow-1 d-flex justify-content-center align-items-center button-box" style="width: 100%; background-color: #ff9800;">
+			<div id="purgedata" data-toggle="modal" data-target="#deletemodal" class="flex-grow-1 d-flex justify-content-center align-items-center button-box" style="width: 100%; background-color: #ff9800;">
 				<span class="button-title">Purge Data</span>
 			</div>
 		</div>
@@ -61,6 +61,23 @@
 				</a>
 			</div>
 		</div>
+		<div id="deletemodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>This will remove all Calendars and Parent info and Pupils?</p>
+                    <input type="hidden" id="did" value="0">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="color:#fff;background:#f00;" onclick="clickDelete()">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 	</div>
 	<div id="deletingmodal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -102,8 +119,7 @@
 		document.getElementById("addteacher").onclick = function() {
 			document.getElementById("go_addteacher").click();
 		};
-		document.getElementById("purgedata").onclick = function() {
-			deletingmodal
+		function clickDelete() {
 			$('#deletingmodal').modal('show');
 			jQuery.ajax({
 					url: "{{URL::route("delete.datas")}}",

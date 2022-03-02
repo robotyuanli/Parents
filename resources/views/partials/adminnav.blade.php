@@ -56,6 +56,17 @@
 
             View Parents No Email
         </a>
+				
+				<a id="navbarDropdown" class="nav-link" href="{{ url('/schedules') }}" role="button" style="color: #012c56;font-size:17px;font-weight: bold;">
+
+            Schedule List
+        </a>
+
+				<a id="navbarDropdown" class="nav-link" href="{{ url('/update/email') }}" role="button" style="color: #012c56;font-size:17px;font-weight: bold;">
+
+            Email Update
+        </a>
+
 
         <!-- <a id="navbarDropdown" class="nav-link"  href="{{ route('adminlogout') }}"
            onclick="event.preventDefault();

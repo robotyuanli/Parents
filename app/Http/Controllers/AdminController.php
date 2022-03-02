@@ -19,6 +19,7 @@ use App\Traits\ActivationTrait;
 use jeremykenedy\LaravelRoles\Models\Role;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Illuminate\Support\Facades\URL;
 
 class AdminController extends Controller
 {
@@ -112,6 +113,10 @@ class AdminController extends Controller
         if($calendar_id == 0)
             return Redirect::back();
 
+				$data = DB::table('t_calendars')->where('id', $calendar_id)->get();
+				$workingdate = $data[0]->workingdate;
+				$workingdate = str_replace("-", "/", $workingdate);
+				
         $children = DB::table('t_calendars as ca')
             ->leftJoin('teachers as te','ca.teacher_id','=','te.id')
             ->leftJoin('childs as ch','te.class_id','=','ch.class_id')
@@ -149,7 +154,7 @@ class AdminController extends Controller
             ->orderby('sl.id')
             ->get();
             // dd($children);
-        return view('pages.admin.calendarappointment',compact('slots','children', 'calendar_id'));
+        return view('pages.admin.calendarappointment',compact('slots','children', 'calendar_id', 'workingdate'));
     }
 
     public function deleteAppointment($appointment_id){
@@ -202,6 +207,7 @@ class AdminController extends Controller
         $last_name = $request->get('last_name', '');
         $c_first_name = $request->get('c_first_name', '');
         $c_last_name = $request->get('c_last_name', '');
+        $email = $request->get('email', '');
         $class_id = $request->get('class_id', 0);
         $id = $request->get('id', 0);
 		
@@ -220,7 +226,8 @@ class AdminController extends Controller
             'name'              => $last_name.$first_name,
             'first_name'        => $first_name,
             'last_name'         => $last_name,
-			'password'			=> $password,
+						'email'							=> $email,
+						'password'			=> $password,
         ]);
         \DB::table('childs')->where('p_id', $id)->update([
             'full_name'              => $c_last_name.$c_first_name,
@@ -306,7 +313,6 @@ class AdminController extends Controller
 				$parentlink = ParentLink::firstOrNew($keys);
 				$parentlink->c_id = $calendar_id;
 				$parentlink->parent_id = $data[$i]['p_id'];
-				$parentlink->url = md5(uniqid($calendar_id.$data[$i]['p_id'], true));
 				$parentlink->save();
 			}	
 			$ret = array();
@@ -314,16 +320,24 @@ class AdminController extends Controller
 			return json_encode($ret);
 		}
 
-        public function deleteDatas() {
-            DB::table('parent_links')->delete();
-            DB::table('childs')->delete();
-            DB::table('parent_slot')->delete();
-            DB::table('t_calendar_slot')->delete();
-            DB::table('t_calendars')->delete();
-            $ret = array();
-			$ret['message'] = 'success';
-			return json_encode($ret);
-        }
+		public function deleteDatas() {
+				DB::table('parent_links')->delete();
+				DB::table('parent_slot')->delete();
+				DB::table('t_calendar_slot')->delete();
+				DB::table('t_calendars')->delete();
+				$parents =  DB::table('childs as ch')
+					->join('users as u', 'ch.p_id', '=', 'u.id')
+					->select('u.id')
+					->get();
+				for($i = 0 ; $i < count($parents) ; $i ++) {
+					DB::table('users')->where('id', $parents[$i]->id)->delete();
+				}
+				DB::table('childs')->delete();
+
+				$ret = array();
+				$ret['message'] = 'success';
+				return json_encode($ret);
+		}
 
 		public function sendEmails(Request $request) {
 			$data = $request->get('data');
@@ -400,9 +414,60 @@ class AdminController extends Controller
 						->join('parent_links as pl', 'pl.parent_id', '=', 'ch.p_id')
                         ->where('pl.c_id', $calendar_id)
 						->where('ch.class_id', $class_id)
-						->select('pl.url')
+						->select('*')
 						->get();
-			return view('pages.admin.manageparentlinks', compact('name', 'data', 'link', 'calendar_id'));
+			return view('pages.admin.manageparentlinks', compact('name', 'data', 'link', 'calendar_id', 'class_id'));
+		}
+
+		public function exportCsv(Request $request){
+			$fileName = 'parent_links.csv';
+			$class_id = $request->get('class_id', '');			
+			$current_calendar = DB::table('t_calendars')
+				->where('class_id', $class_id)
+				->where('is_deleted', 0)
+				->get();
+			if(count($current_calendar) == 0) {
+				$calendar_id = -1;
+			}
+			else {
+				$calendar_id = $current_calendar[0]->id;
+			}
+
+			$data = DB::table('childs as ch')
+					->join('users as u', 'u.id', '=', 'ch.p_id')
+					->join('parent_links as pl', 'pl.parent_id', '=', 'ch.p_id')
+					->where('pl.c_id', $calendar_id)
+					->where('ch.class_id', $class_id)
+					->select('u.email', 'ch.first_name', 'ch.last_name', 'pl.id')
+					->get();
+			
+			$headers = array(
+					"Content-type"        => "text/csv",
+					"Content-Disposition" => "attachment; filename=$fileName",
+					"Pragma"              => "no-cache",
+					"Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+					"Expires"             => "0"
+			);
+
+			$columns = array('Parent Email', 'Child Name', 'URL');
+
+			$callback = function() use($data, $columns) {
+					$file = fopen('php://output', 'w');
+					fputcsv($file, $columns);
+
+					foreach ($data as $item) {
+							$row['Parent Email']  = $item->email;
+							$row['Child Name']    = $item->first_name.' '.$item->last_name;
+							$row['URL']    = URL::to('/').'/pupilslot/'.$item->id;
+
+							fputcsv($file, array($row['Parent Email'], $row['Child Name'], $row['URL']));
+					}
+
+					fclose($file);
+			};
+
+			return response()->stream($callback, 200, $headers);
+			
 		}
 
     public function manageteachers(){
@@ -439,14 +504,44 @@ class AdminController extends Controller
         return view('pages.admin.calendarteacher', compact('schedules', 'teacher'));
     }
 
+		public function showSchedules() {
+			$schedules = DB::table('parent_slot as ps')
+						->leftJoin('t_calendar_slot as ts', 'ps.slot_id', '=', 'ts.id')
+						->leftJoin('t_calendars as tc', 'ts.calendar_id', '=', 'tc.id')
+            ->leftJoin('users as u','u.id','=','ps.parent_id')
+            ->leftjoin('childs as ch', 'ch.p_id', '=', 'u.id')
+						->leftJoin('teachers as te', 'te.id', '=', 'tc.teacher_id')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'ch.first_name as ch_firstname', 'ch.last_name as ch_lastname', 'te.first_name as te_firstname', 'te.last_name as te_lastname', 'tc.workingdate', 'tc.app_from', 'tc.app_to')
+						->where('tc.is_deleted', 0)
+						->where('ps.is_deleted', 0)
+            ->get();
+			return view('pages.admin.schedulelist', compact('schedules'));
+		}
+
+		public function showEmail() {
+			$data = DB::table('email')->get();
+			$content = $data[0]->content;
+			return view('pages.admin.updateemail', compact('content'));
+		}
+
+		public function updateEmail(Request $request) {
+			$updated_content = $request->post('content', '');
+			$teacher = \DB::table('email')->where('id', 0)->update([
+				'content'	=> $updated_content,
+			]);
+			return Redirect::to('/update/email');
+		}
+
     public function showCalendarParent($id){
         $parents = DB::table('parent_slot as ps')
+						->leftJoin('t_calendar_slot as ts', 'ps.slot_id', '=', 'ts.id')
+						->leftJoin('t_calendars as tc', 'ts.calendar_id', '=', 'tc.id')
             ->leftJoin('users as u','u.id','=','ps.parent_id')
-            ->leftjoin('role_user as ru', 'ru.user_id', '=', 'u.id')
-            ->leftjoin('childs as c', 'c.p_id', '=', 'u.id')
-            ->select('u.*', 'c.full_name')
-            ->where('ru.role_id', 2)
-            ->where('ps.schedule_id', $id)
+            ->leftjoin('childs as ch', 'ch.p_id', '=', 'u.id')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'ch.first_name as ch_firstname', 'ch.last_name as ch_lastname')
+            ->where('tc.id', $id)
+						->where('tc.is_deleted', 0)
+						->where('ps.is_deleted', 0)
             ->get();
         return view('pages.admin.calendarparent', compact('parents'));
     }
@@ -530,7 +625,9 @@ class AdminController extends Controller
     }
     public function addpupil(){
         $classes = DB::table('classes')->get();
-        $parents = DB::table('users')->leftJoin('role_user','users.id', 'role_user.user_id')->where('role_user.role_id',2)->get(['users.id', 'users.name']);
+        $parents = DB::table('childs as ch')
+											->leftJoin('users as u','u.id', '=', 'ch.p_id')
+											->get(['u.id', 'u.first_name', 'u.last_name']);
         //dd($parents);
         return view('pages.admin.addpupil')
             ->with('classes',$classes)

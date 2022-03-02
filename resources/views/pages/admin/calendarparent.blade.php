@@ -33,13 +33,13 @@
                     @foreach($parents as $parent)
                         <tr>
                             <td>
-                                {{ $parent->name }}
+                                {{ $parent->first_name }} {{ $parent->last_name }}
                             </td>
                             <td>
                                 {{ $parent->email }}
                             </td>
                             <td>
-                                {{ $parent->full_name }}
+                                {{ $parent->ch_firstname }} {{ $parent->ch_lastname }}
                             </td>
 
                         </tr>

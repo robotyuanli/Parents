@@ -84,15 +84,20 @@
                     <div class="col-md-4 p-0">
                         <select class="form-control " id="app_from" name="app_from" style="display:inline-block;border:2px solid #000;font-size:17px;color:#000;height:40px;" >
                             {{--<option value="0"></option>--}}
-                            @for($i = 1;$i < 24; $i++)
+                            @for($i = 12;$i < 22; $i++)
                             @for($j = 0;$j < 60; $j=$j+15)
                                 <?php
                                 if($i < 13) {$k = ($i*100)+$j;$str = 'am';}
                                 else {$k = ($i*100)+$j;$str = 'pm';}
+																if($j < 10) {
+																	$j = '0'.$j;
+																}
                                 ?>
-                                <option value="{{ $k }}">{{ $i }} : {{$j}}  {{ $str }}</option>
+                                <option value="{{ $k }}">{{ $i }} : {{ $j }}  {{ $str }}</option>
                                 @endfor
                             @endfor
+														<?php {$k = ($i*100)+$j;$str = 'pm';} ?>
+														<option value="{{ $k }}">{{ $i }} : 00  {{ $str }}</option>
                         </select>
                     </div>
                     <div class="col-md-2 p-0 align-content-center" style="font-size:20px;font-weight: bold;text-align: center;">
@@ -101,15 +106,20 @@
                     <div class="col-md-4 p-0">
                         <select class="form-control " id="app_to" name="app_to" style="display:inline-block;border:2px solid #000;font-size:17px;color:#000;height:40px;" >
                             {{--<option value="0"></option>--}}
-                            @for($i = 1;$i < 24; $i++)
+                            @for($i = 12;$i < 22; $i++)
                             @for($j = 0;$j < 60; $j=$j+15)
                                 <?php
                                 if($i < 13) {$k = ($i*100)+$j;$str = 'am';}
                                 else {$k = ($i*100)+$j;$str = 'pm';}
+																if($j < 10) {
+																	$j = '0'.$j;
+																}
                                 ?>
                                 <option value="{{ $k }}">{{ $i }} : {{$j}}  {{ $str }}</option>
                                 @endfor
                             @endfor
+														<?php {$k = ($i*100)+$j;$str = 'pm';} ?>
+														<option value="{{ $k }}">{{ $i }} : 00  {{ $str }}</option>
                         </select>
                     </div>
                 </div>
@@ -149,7 +159,15 @@
                 return value <= fromTo;
                 // return parseInt(value, 10) > parseInt($otherElement.val(), 10);
             });
-
+				
+				var classSelect = document.getElementById('class_id');
+				var teacherSelect = document.getElementById('teacher_id');
+				classSelect.onchange = function(e){
+						teacherSelect.selectedIndex  = classSelect.selectedIndex
+				};
+				teacherSelect.onchange = function(e){
+						classSelect.selectedIndex  = teacherSelect.selectedIndex
+				};
 
         $("#form_add").validate({
             errorPlacement: function (error, element) {

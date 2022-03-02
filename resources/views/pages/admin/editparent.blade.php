@@ -46,11 +46,19 @@
                     </div>
                 </div>
 
- 		 <div class="form-group col-md-12">
+ 		 						<div class="form-group col-md-6">
                     <label for="last_name" class="col-md-12 col-form-label text-md-left">Password *</label>
 
                     <div class="col-md-12">
                         <input id="password" type="password" class="form-control" name="password" value="">
+                    </div>
+                </div>
+
+								<div class="form-group col-md-6">
+                    <label for="last_name" class="col-md-12 col-form-label text-md-left">Email</label>
+
+                    <div class="col-md-12">
+                        <input id="email" type="text" class="form-control" name="email" value="{{ $parent->email }}" required autofocus>
                     </div>
                 </div>
 

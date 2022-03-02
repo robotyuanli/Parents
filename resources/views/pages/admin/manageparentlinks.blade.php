@@ -53,12 +53,12 @@
 															</td>
 															<td style="text-align: center">
 																@if(count($link) == count($data))
-																	{{ $link[$index]->url }}
+																	{{ $link[$index]->id }}
 																@endif
 															</td>
 															<td style="text-align: center">
 																@if(count($link) == count($data))
-																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->url}}" id="url{{ $index }}"><i class="fa fa-eye" style="color:black; font-size:20px;"></i></a>
+																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->id}}" id="url{{ $index }}"><i class="fa fa-eye" style="color:black; font-size:20px;"></i></a>
 																@else
 																	<i class="fa fa-eye" onclick="" style="color:grey; font-size:20px;"></i>
 																@endif											
@@ -81,12 +81,12 @@
         </div>
 				<div class="row" style="margin-top: 130px;">
 					<div class="col-md-12" style="padding-top:0px;position: absolute;bottom:30px;right:50px;" >
-						<div class="col-md-6">
+						<div class="col-md-3">
 								&nbsp;
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-9">
 								@if(count($data) > 0)
-									<div class="col-md-6">
+									<div class="col-md-4">
 											@if($calendar_id != -1)
 												<button onclick="generateLinks()" type="submit" style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
 														Generate Links
@@ -98,7 +98,7 @@
 												</button>
 											@endif
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-4">
 											@if($calendar_id != -1)
 												<button onclick="sendEmails()" type="submit" style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
 														Send Emails
@@ -107,6 +107,18 @@
 											@if($calendar_id == -1)
 												<button onclick="" type="submit" style="opacity:0.3;text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
 														Send Emails
+												</button>
+											@endif
+									</div>
+									<div class="col-md-4">
+											@if($calendar_id != -1)
+												<a href="{{ url('/export/csv?class_id=') }}{{$class_id}}" target='_blank' style="text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
+														Export
+												</a>
+											@endif
+											@if($calendar_id == -1)
+												<button onclick="" type="submit" style="opacity:0.3;text-align:center;color:#fff;font-size:25px;font-weight: bold;display:block;width:240px;background-color: #00137f;padding:15px 0px;border-radius: 7px;text-decoration: none">
+														Export
 												</button>
 											@endif
 									</div>
@@ -192,6 +204,17 @@
 							console.log(result);
 							$('#sendingmodal').modal('hide');
 							$('#confirmmodal').modal('show');
+						}});
+			}
+			function exportCsv(class_id) {
+				var result = {};
+				result.class_id = class_id;
+				jQuery.ajax({
+						url: "{{URL::route("export.csv")}}",
+						data: result,
+						method: 'get',
+						success: function(result){
+							console.log('aaaaaaaa');
 						}});
 			}
 		</script>

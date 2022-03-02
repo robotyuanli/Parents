@@ -76,7 +76,7 @@
                         <select id="parent_id" name="parent_id" class="form-control" style="height:34px;">
                             <option value="0" ></option>
                             @foreach($parents as $parent)
-                                <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+                                <option value="{{ $parent->id }}">{{ $parent->first_name }} {{ $parent->last_name }}</option>
                             @endforeach
                         </select>
                         @if ($errors->has('parent_id'))

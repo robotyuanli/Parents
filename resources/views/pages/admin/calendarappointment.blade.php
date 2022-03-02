@@ -21,7 +21,10 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-12" style="padding-top:50px;">
+						<div class="col-md-12" style="padding-top:20px;">
+                <h2 style="text-align: center; font-size:25px;font-weight: bold; text-align: left;">Date: {{$workingdate}}</h2>
+            </div>
+            <div class="col-md-12">
                 <h2 style="text-align: center; font-size:30px;font-weight: bold;">Slots</h2>
             </div>
             <div class="col-md-12 table-responsive-md" style="padding-top:50px;padding-bottom:50px;">

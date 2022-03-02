@@ -28,15 +28,22 @@ class WelcomeController extends Controller
     {
         return view('pages.user.parentslot');
 		}
-		public function showPupilSlot($parent_link) {
-			$data = DB::table('parent_links')->where('url', $parent_link)->get();
+		public function showPupilSlot($parent_id) {
+			$data = DB::table('parent_links')->where('id', $parent_id)->get();
 			$calendar_id = $data[0]->c_id;
+			$parent_id = $data[0]->parent_id;
+			
+			$data = DB::table('t_calendars')->where('id', $calendar_id)->get();
+			$workingdate = $data[0]->workingdate;
+			$workingdate = str_replace("-", "/", $workingdate);
+
 			$children = DB::table('t_calendars as ca')
 						->leftJoin('teachers as te','ca.teacher_id','=','te.id')
 						->leftJoin('childs as ch','te.class_id','=','ch.class_id')
 						->leftJoin('users as u','u.id','=','ch.p_id')
 						->select('ch.first_name', 'ch.last_name', 'ch.id', 'ch.p_id')
 						->where('ca.id', $calendar_id)
+						->where('ch.p_id', $parent_id)
 						->get();
 
 			$slots = \DB::table('t_calendar_slot as sl')
@@ -56,6 +63,7 @@ class WelcomeController extends Controller
 							,'sl.id as slot_id'
 							,'sl.order'
 							,'ps.parent_id'
+							,'sl.duration as meeting_time'
 							,'ca.duration'
 							,'ca.app_from'
 							,'ca.app_to'
@@ -66,6 +74,6 @@ class WelcomeController extends Controller
 					->where('ca.id', $calendar_id)
 					->orderby('sl.id')
 					->get();
-			return view('pupilslot',compact('slots','children', 'calendar_id'));
+			return view('pupilslot',compact('slots','children', 'calendar_id', 'workingdate'));
 		}
 }

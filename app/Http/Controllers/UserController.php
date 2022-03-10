@@ -33,38 +33,23 @@ class UserController extends Controller
             return Redirect::to('/adminhome');
         }
 
-        $teacher = \DB::table('users as u')
-            ->leftJoin('childs as ch','ch.p_id','=','u.id')
-            ->leftJoin('teachers as te','te.class_id','=','ch.class_id')
-            ->select('te.first_name','te.last_name','te.full_name','te.id')
-            ->where('u.id', $user->id)
-            ->first()
-        ;
-//        $booked_ids = \DB::table('parent_slot')
-//            ->where('parent_id', $user->id)
-//            ->where('is_deleted', 0)
-//            ->select('id','schedule_id')->get()->toArray();
-//        $bookidarray = [];
-//        foreach ($booked_ids as $booked_id) {
-//            $bookidarray[] = $booked_id->schedule_id;
-//        }
-
-
-        $today = date('m/d/Y');
-        $schedules = \DB::table('t_calendars as s')
-            ->leftjoin('classes as cs', 'cs.id', '=', 's.class_id')
-            ->leftjoin('teachers as t', 't.id', '=', 's.teacher_id')
-            ->leftJoin('childs as ch','ch.class_id','=','t.class_id')
-            ->leftJoin('users as u','ch.p_id','=','u.id')
-            ->select('s.*', 'cs.name as class_name', 't.full_name as t_full_name', 't.first_name as t_first_name','t.last_name as t_last_name')
-            ->where('u.id', $user->id)
-            ->where('s.workingdate','>=', $today)
-            ->where('s.is_deleted', 0)
-//            ->whereNotIn('s.id', $bookidarray)
-            ->orderby('s.workingdate', 'asc')
+        $teacher = \DB::table('teachers as te')
+            ->where('te.id', $user->teacher_id)
+            ->first();
+				$schedules = \DB::table('parent_slot as ps')
+						->leftJoin('t_calendar_slot as ts', 'ps.slot_id', '=', 'ts.id')
+						->leftJoin('t_calendars as tc', 'ts.calendar_id', '=', 'tc.id')
+            ->leftJoin('users as u','u.id','=','ps.parent_id')
+            ->leftjoin('childs as ch', 'ch.p_id', '=', 'u.id')
+						->leftJoin('teachers as te', 'te.id', '=', 'tc.teacher_id')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'ch.first_name as ch_firstname', 'ch.last_name as ch_lastname', 'te.first_name as te_firstname', 'te.last_name as te_lastname', 'tc.workingdate', 'tc.app_from', 'tc.app_to')
+						->where('tc.is_deleted', 0)
+						->where('ps.is_deleted', 0)
+						->where('te.id', $user->teacher_id)
             ->get();
-        //dd($schedules);
-        return view('pages.user.home',compact('schedules','today','teacher'));
+				// dd($schedules);
+					
+        return view('pages.user.home',compact('schedules','teacher'));
     }
 
     public function adminindex()

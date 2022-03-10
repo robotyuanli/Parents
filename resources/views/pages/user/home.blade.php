@@ -19,26 +19,22 @@
             }
         }
     </style>
-    <div class="container">
-        <div class="row top-bar" style="background: #00137f; color: white; text-align: center;">
-            <div class="col-md-4">
-                <h3>Date:{{$today}}</h3>
-            </div>
-            <div class="col-md-4">
-                <h3> Available time solts</h3>
-                <h4>Please select a time slot below</h4>
-            </div>
-            <div class="col-md-4">
-                <h3>Teacher: Mrs {{$teacher->first_name}} {{$teacher->last_name}}</h3>
-            </div>
-        </div>
-        <div class="row">
+   	<div class="container">
+		 <div class="row top-bar" style="background: #00137f; color: white; text-align: center;">
+				<div class="col-md-6">
+						<h3> Available time solts</h3>
+				</div>
+				<div class="col-md-6">
+						<h3>Teacher: Mrs {{$teacher->first_name}} {{$teacher->last_name}}</h3>
+				</div>
+			</div>
+			<div class="row">
             <div class="col-md-12 table-responsive-md" style="padding-top:50px;">
 
-<div class="row">
+				<div class="row">
                     @foreach($schedules as $schedule)
                         <div class="col-md-3 parentslot" style="cursor: pointer;" >
-                            <div class="col-md-12 slotitem" onclick="BookingSlot({{$schedule->id}})">
+                            <div class="col-md-12 slotitem">
                                 <?php
                                 if($schedule->app_from/100 > 12){
                                     $app_from = ($schedule->app_from/100) - 12;
@@ -53,20 +49,17 @@
                                     $app_to = ($schedule->app_to/100).' am';
                                 }
                                 ?>
-                                <h1 style="font-size: 25px;text-align: center">Mrs {{ $schedule->t_first_name }} {{ $schedule->t_last_name }}</h1>
-                                <p style="font-size: 22px;text-align: center">{{ $schedule->workingdate }}</p>
-                                <p style="font-size: 22px;text-align: center">{{ $app_from }} - {{ $app_to }}</p>
-                                <p style="font-size: 19px;text-align: center">{{ $schedule->t_first_name }} {{ $schedule->t_last_name }}</p>
-                                {{--<i class="fa fa-eye fa-graduation-cap delete" onclick="BookingSlot({{$schedule->id}})"></i>--}}
-
+																<h1 style="font-size: 25px;text-align: center">Mrs {{ $schedule->te_firstname }} {{ $schedule->te_lastname }}</h1>
+																<p style="font-size: 22px;text-align: center">{{ $schedule->workingdate }}</p>
+																<p style="font-size: 22px;text-align: center">{{ $app_from }} - {{ $app_to }}</p>
+                                <p style="font-size: 19px;text-align: center">{{ $schedule->first_name }} {{ $schedule->last_name }}</p>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
         </div>
-    </div>
-
+		</div>
 
     <div id="slotModal" class="modal fade" role="dialog" style="top: 120px;" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog" style="margin: 50px auto !important">

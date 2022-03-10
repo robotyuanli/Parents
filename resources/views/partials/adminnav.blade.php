@@ -68,12 +68,12 @@
         </a>
 
 
-        <!-- <a id="navbarDropdown" class="nav-link"  href="{{ route('adminlogout') }}"
+        <a id="navbarDropdown" class="nav-link"  href="{{ route('adminlogout') }}"
            onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();" role="button"  style="color: #0076ff;font-size:17px;font-weight: bold;">
 
             Logout
-        </a> -->
+        </a>
         <form id="logout-form" action="{{ route('adminlogout') }}" method="POST" style="display: none;">
             @csrf
         </form>

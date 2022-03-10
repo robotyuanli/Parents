@@ -25,7 +25,7 @@
 						<h3> Available time solts</h3>
 				</div>
 				<div class="col-md-6">
-						<h3>Teacher: Mrs {{$teacher->first_name}} {{$teacher->last_name}}</h3>
+						<h3>Teacher: <?php if($schedule->prefix==1) echo "Mr";if($schedule->prefix==2) echo "Mrs";if($schedule->prefix==3) echo "Miss";if($schedule->prefix==4) echo "Ms";?> {{$teacher->first_name}} {{$teacher->last_name}}</h3>
 				</div>
 			</div>
 			<div class="row">

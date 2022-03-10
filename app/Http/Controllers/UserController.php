@@ -42,7 +42,7 @@ class UserController extends Controller
             ->leftJoin('users as u','u.id','=','ps.parent_id')
             ->leftjoin('childs as ch', 'ch.p_id', '=', 'u.id')
 						->leftJoin('teachers as te', 'te.id', '=', 'tc.teacher_id')
-            ->select('u.first_name', 'u.last_name', 'u.email', 'ch.first_name as ch_firstname', 'ch.last_name as ch_lastname', 'te.first_name as te_firstname', 'te.last_name as te_lastname', 'tc.workingdate', 'tc.app_from', 'tc.app_to')
+            ->select('u.first_name', 'u.last_name', 'u.email', 'ch.first_name as ch_firstname', 'ch.last_name as ch_lastname', 'te.first_name as te_firstname', 'te.last_name as te_lastname', 'tc.workingdate', 'tc.app_from', 'tc.app_to', 'te.prefix as prefix')
 						->where('tc.is_deleted', 0)
 						->where('ps.is_deleted', 0)
 						->where('te.id', $user->teacher_id)

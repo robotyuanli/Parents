@@ -68,7 +68,7 @@
 											$app_to = (($schedule->app_to - $schedule->app_to%100)/100).'.'. $rest .' am';
 									}
 								?>
-								<h1 style="font-size: 25px;text-align: center">Mrs {{ $schedule->te_firstname }} {{ $schedule->te_lastname }}</h1>
+								<h1 style="font-size: 25px;text-align: center"><?php if($schedule->prefix==1) echo "Mr";if($schedule->prefix==2) echo "Mrs";if($schedule->prefix==3) echo "Miss";if($schedule->prefix==4) echo "Ms";?> {{ $schedule->te_firstname }} {{ $schedule->te_lastname }}</h1>
 								<p style="font-size: 22px;text-align: center">{{ $schedule->workingdate }}</p>
 								<p style="font-size: 22px;text-align: center">{{ $app_from }} - {{ $app_to }}</p>
                                 <p style="font-size: 19px;text-align: center">{{ $schedule->first_name }} {{ $schedule->last_name }}</p>

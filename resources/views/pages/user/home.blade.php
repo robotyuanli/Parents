@@ -36,22 +36,41 @@
                         <div class="col-md-3 parentslot" style="cursor: pointer;" >
                             <div class="col-md-12 slotitem">
                                 <?php
-                                if($schedule->app_from/100 > 12){
-                                    $app_from = ($schedule->app_from/100) - 12;
-                                    $app_from = $app_from.' pm';
-                                }else{
-                                    $app_from = ($schedule->app_from/100).' am';
-                                }
-                                if($schedule->app_to/100 > 12){
-                                    $app_to = ($schedule->app_to/100) - 12;
-                                    $app_to = $app_to.' pm';
-                                }else{
-                                    $app_to = ($schedule->app_to/100).' am';
-                                }
-                                ?>
-																<h1 style="font-size: 25px;text-align: center">Mrs {{ $schedule->te_firstname }} {{ $schedule->te_lastname }}</h1>
-																<p style="font-size: 22px;text-align: center">{{ $schedule->workingdate }}</p>
-																<p style="font-size: 22px;text-align: center">{{ $app_from }} - {{ $app_to }}</p>
+									if($schedule->app_from%100 == 0) {
+										$rest = '00';
+									}
+									else if ($schedule->app_from%100 < 10) {
+										$rest = '0'.$schedule->app_from%100;
+									}
+									else {
+										$rest = $schedule->app_from%100;
+									}
+
+									if($schedule->app_from/100 > 12){
+										$app_from = (($schedule->app_from - $schedule->app_from%100)/100).'.'. $rest. ' pm';
+									}else{
+											$app_from = (($schedule->app_from - $schedule->app_from%100)/100).'.'. $rest. ' am';
+									}
+
+									if($schedule->app_to%100 == 0) {
+										$rest = '00';
+									}
+									else if ($schedule->app_to%100 < 10) {
+										$rest = '0'.$schedule->app_to%100;
+									}
+									else {
+										$rest = $schedule->app_to%100;
+									}
+
+									if($schedule->app_to/100 > 12){
+											$app_to = (($schedule->app_to - $schedule->app_to%100)/100).'.'. $rest. ' pm';
+									}else{
+											$app_to = (($schedule->app_to - $schedule->app_to%100)/100).'.'. $rest .' am';
+									}
+								?>
+								<h1 style="font-size: 25px;text-align: center">Mrs {{ $schedule->te_firstname }} {{ $schedule->te_lastname }}</h1>
+								<p style="font-size: 22px;text-align: center">{{ $schedule->workingdate }}</p>
+								<p style="font-size: 22px;text-align: center">{{ $app_from }} - {{ $app_to }}</p>
                                 <p style="font-size: 19px;text-align: center">{{ $schedule->first_name }} {{ $schedule->last_name }}</p>
                             </div>
                         </div>

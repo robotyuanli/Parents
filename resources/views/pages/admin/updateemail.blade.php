@@ -21,12 +21,30 @@
 					<form method="POST" action="{{ route('updateemail') }}">
 						@csrf
 						<div class="form-group col-md-12" style="padding-top:50px;">
-								<label for="last_name" class="col-md-12 col-form-label text-md-left">Content *</label>
+								<label for="last_name" class="col-md-12 col-form-label text-md-left">Header *</label>
 								<div class="col-md-12">
-										<textarea style="width:70vw; height: 150px" id="content" name="content">{{ $content }}</textarea>
+										<textarea style="width:70vw;" id="header" name="header">{{ $header }}</textarea>
 								</div>
 						</div>
-						<div class="col-md-12" style="padding-top:50px;position: absolute;bottom:50px;right:50px;" >
+						<div class="form-group col-md-12">
+								<label for="last_name" class="col-md-12 col-form-label text-md-left">Content *</label>
+								<div class="col-md-12">
+										<textarea style="width:70vw; height: 100px" id="content" name="content">{{ $content }}</textarea>
+								</div>
+						</div>
+						<div class="form-group col-md-12">
+								<label for="last_name" class="col-md-12 col-form-label text-md-left">Footer *</label>
+								<div class="col-md-12">
+										<textarea style="width:70vw; height: 100px" id="footer" name="footer">{{ $footer }}</textarea>
+								</div>
+						</div>
+						<div class="form-group col-md-12">
+								<label for="last_name" class="col-md-12 col-form-label text-md-left">End *</label>
+								<div class="col-md-12">
+										<textarea style="width:70vw;" id="end" name="end">{{ $end }}</textarea>
+								</div>
+						</div>
+						<div class="col-md-12" style="padding-top:50px; padding-bottom:50px;" >
                     <div class="col-md-9">
                         &nbsp;
                     </div>

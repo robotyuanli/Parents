@@ -106,19 +106,38 @@
                             }
                             $start_minute = $minutes % 60;
                             $start_minute = sprintf("%02d", $start_minute);
-
+														
+														if($slot->ch_f_name != "" && $slot->ch_l_name != "") {
+															for($i = 0 ; $i < count($children) ; $i++) {
+																$ch = $children[$i];
+																if($ch->first_name != $slot->ch_f_name || $ch->last_name != $slot->ch_l_name) {
+																	break;
+																}
+															}
+															if($i == count($children)) {
+																$isShow = true;
+															}
+															else {
+																$isShow = false;
+															}
+														}
+														else {
+															$isShow = true;
+														}
                             ?>
-                                <div class="col-md-12 slotitem appoint_box {{$cls}}">
-                                    <p style="font-size: 22px;">{{$prefix}} {{ $teacher_name }}</p>
-                                    <p style="font-size: 22px;">{{ $app_from }} - {{ $app_to }} ,  {{ $start_hour }}:{{$start_minute}} {{$half}} - {{$slot->meeting_time}}min</p>
-                                    <p style="font-size: 22px;">Parent Name: {{ $parent_name }}</p>
-                                <p style="font-size: 22px;">Parent Email: {{ $parent_email }}</p>
-                                <p style="font-size: 19px;">Child Name: {{ $child_name }}</p>
-                                <p style="font-size: 19px;">Appointment Date: {{ $appoint_date }}</p>
-                                @if(!($is_deleted == 0 && $appoint_id > 0))
-                                  <i class="fa fa-plus delete"  onclick="selectAdd({{ $slot_id }})" data-toggle="modal" data-target="#addmodal"></i>
-                                @endif
-                            </div>
+														@if($isShow)
+															<div class="col-md-12 slotitem appoint_box {{$cls}}">
+																<p style="font-size: 22px;">{{$prefix}} {{ $teacher_name }}</p>
+																<p style="font-size: 22px;">{{ $app_from }} - {{ $app_to }} ,  {{ $start_hour }}:{{$start_minute}} {{$half}} - {{$slot->meeting_time}}min</p>
+																<p style="font-size: 22px;">Parent Name: {{ $parent_name }}</p>
+																<p style="font-size: 22px;">Parent Email: {{ $parent_email }}</p>
+																<p style="font-size: 19px;">Child Name: {{ $child_name }}</p>
+																<p style="font-size: 19px;">Appointment Date: {{ $appoint_date }}</p>
+																@if(!($is_deleted == 0 && $appoint_id > 0))
+																	<i class="fa fa-plus delete"  onclick="selectAdd({{ $slot_id }})" data-toggle="modal" data-target="#addmodal"></i>
+																@endif
+															</div>
+													@endif
                         </div>
                     @endforeach
                 </div>

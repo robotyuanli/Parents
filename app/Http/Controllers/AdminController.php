@@ -340,32 +340,52 @@ class AdminController extends Controller
 		}
 
 		public function sendEmails(Request $request) {
-			$data = $request->get('data');
-			$link = $request->get('link');
-			require_once getcwd()."/php_mail/vendor/autoload.php";
-			
-			for($i = 0 ; $i < count($link) ; $i ++) {
-				$mail = new PHPMailer;
-				$mail->IsSMTP();                                      // Set mailer to use SMTP
-                $mail->Host = 'smtp.office365.com';                 // Specify main and backup server
-				$mail->Port = 587;                                    // Set the SMTP port
-				$mail->SMTPAuth = true;                               // Enable SMTP authentication
-				$mail->Username = 'parents@queenscofe.org.uk';                // SMTP username
-				$mail->Password = 'Sud09358';                  // SMTP password
-				$mail->SMTPSecure = 'tls';         
-				//From email address and name
-				$mail->From = "parents@queenscofe.org.uk";
-                $mail->FromName = "Parents System.";
-				
-				//To address and name
-				$mail->addAddress($data[$i]['email']);
-				$mail->isHTML(true);
-				
+			$class_id = $request->get('class_id');
+			$email = DB::table('email')->get();
+			$header = $email[0]->content;
+			$content = $email[1]->content;
+			$footer = $email[2]->content;
+			$end = $email[3]->content;
+			$current_calendar = DB::table('t_calendars')
+															->where('class_id', $class_id)
+															->where('is_deleted', 0)
+															->get();
+			if(count($current_calendar) == 0) {
+				$calendar_id = -1;
+			}
+			else {
+				$calendar_id = $current_calendar[0]->id;
+			}
+
+			$data = DB::table('childs as ch')
+						->join('users as u', 'u.id', '=', 'ch.p_id')
+						->join('parent_links as pl', 'pl.parent_id', '=', 'ch.p_id')
+						->where('ch.class_id', $class_id)
+						->where('pl.c_id', $calendar_id)
+						->select('u.email', 'pl.id as id')
+						->get();
+
+			require_once getcwd() . "/php_mail/vendor/autoload.php";
+			for($i = 0 ; $i < count($data) ; $i ++) {
+				$mail = new PHPMailer();
+				$mail->IsSMTP();
+				$mail->SMTPDebug = 1;
+				$mail->SMTPSecure = 'ssl';
+				$mail->Host = "parentsevening.uk";
+				$mail->Port = 465;
+				$mail->IsHTML(true);
+				$mail->SMTPAuth = true;
+				$mail->Username = "queens@parentsevening.uk";
+				$mail->Password = "Cbe$25z1";
+				$mail->SetFrom("queens@parentsevening.uk", 'Parents System');
 				$mail->Subject = "Pupil Slot";
-				$url = "http://criteria.loginto.me/Parents/public/pupilslot/".$link[$i]['url'];
-				$mail->Body = "Hello!<p>Please see below for your unique access URL for the parents evening coming up.</p><p>URL: <a href='".$url."'>".$url."</a></p><p>Any problems, please contact your Class Teacher via Class Dojo or the school office on 02476 382 906</p><p>Many thanks";
+			
+				$url = "https://www.parentsevening.uk/pupilslot/".$data[$i]->id;
+				$mail->Body = "<p>".$header."</p><p>".$content."</p><p>URL: ".$url."</p><p>".$footer."</p><p>".$end."</p>";
+				$mail->AddAddress($data[$i]->email, "");
 				$mail->send();
 			}
+
 			$ret = array();
 			$ret['message'] = 'success';
 			return json_encode($ret);
@@ -520,14 +540,29 @@ class AdminController extends Controller
 
 		public function showEmail() {
 			$data = DB::table('email')->get();
-			$content = $data[0]->content;
-			return view('pages.admin.updateemail', compact('content'));
+			$header = $data[0]->content;
+			$content = $data[1]->content;
+			$footer = $data[2]->content;
+			$end = $data[3]->content;
+			return view('pages.admin.updateemail', compact('header', 'content', 'footer', 'end'));
 		}
 
 		public function updateEmail(Request $request) {
+			$updated_header = $request->post('header', '');
 			$updated_content = $request->post('content', '');
-			$teacher = \DB::table('email')->where('id', 0)->update([
+			$updated_footer = $request->post('footer', '');
+			$updated_end = $request->post('end', '');
+			\DB::table('email')->where('id', 0)->update([
+				'content'	=> $updated_header,
+			]);
+			\DB::table('email')->where('id', 1)->update([
 				'content'	=> $updated_content,
+			]);
+			\DB::table('email')->where('id', 2)->update([
+				'content'	=> $updated_footer,
+			]);
+			\DB::table('email')->where('id', 3)->update([
+				'content'	=> $updated_end,
 			]);
 			return Redirect::to('/update/email');
 		}

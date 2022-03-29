@@ -190,15 +190,13 @@
 						}});
 			}
 			function sendEmails() {
-				var data = {!! $data !!};
-				var link = {!! $link !!};
-				var parentLink = {};
-				parentLink.data = data;
-				parentLink.link = link;
+				var class_id = {!! $class_id !!};
+				var param = {};
+				param.class_id = class_id;
 				$('#sendingmodal').modal('show');
 				jQuery.ajax({
 						url: "{{URL::route("send.emails")}}",
-						data: parentLink,
+						data: param,
 						method: 'get',
 						success: function(result){
 							console.log(result);

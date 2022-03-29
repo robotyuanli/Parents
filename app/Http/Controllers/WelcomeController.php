@@ -28,8 +28,8 @@ class WelcomeController extends Controller
     {
         return view('pages.user.parentslot');
 		}
-		public function showPupilSlot($parent_id) {
-			$data = DB::table('parent_links')->where('id', $parent_id)->get();
+		public function showPupilSlot($link) {
+			$data = DB::table('parent_links')->where('link', $link)->get();
 			$calendar_id = $data[0]->c_id;
 			$parent_id = $data[0]->parent_id;
 			

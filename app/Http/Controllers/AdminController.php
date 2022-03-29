@@ -313,6 +313,7 @@ class AdminController extends Controller
 				$parentlink = ParentLink::firstOrNew($keys);
 				$parentlink->c_id = $calendar_id;
 				$parentlink->parent_id = $data[$i]['p_id'];
+				$parentlink->link = rand(10000, 99999);
 				$parentlink->save();
 			}	
 			$ret = array();

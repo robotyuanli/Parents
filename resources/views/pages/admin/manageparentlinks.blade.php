@@ -53,12 +53,12 @@
 															</td>
 															<td style="text-align: center">
 																@if(count($link) == count($data))
-																	{{ $link[$index]->id }}
+																	{{ $link[$index]->link }}
 																@endif
 															</td>
 															<td style="text-align: center">
 																@if(count($link) == count($data))
-																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->id}}" id="url{{ $index }}"><i class="fa fa-eye" style="color:black; font-size:20px;"></i></a>
+																	<a href="{{ url('/pupilslot/') }}/{{$link[$index]->link}}" id="url{{ $index }}"><i class="fa fa-eye" style="color:black; font-size:20px;"></i></a>
 																@else
 																	<i class="fa fa-eye" onclick="" style="color:grey; font-size:20px;"></i>
 																@endif											
